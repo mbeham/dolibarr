@@ -1,0 +1,26 @@
+name: docker
+
+on:
+    push:
+        branches: ["1*", "mbe*"]
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: "{{defaultContext}}"
+          file: "{{defaultContext}}/build/docker"
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ghcr.io/mbeham/dolibarr:latest
+
